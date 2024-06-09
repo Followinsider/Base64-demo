@@ -42,5 +42,5 @@ const myBtoA = (str: string) => {
   return ascii;
 };
 
-console.log("Lcx--encode:", myAtob("M"));
+console.log("Lcx--encode:", myAtob("Lcx"));
 console.log("TGN4A--decode:", myBtoA("TGN4A"));
