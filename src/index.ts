@@ -4,50 +4,21 @@ import {
   base64TableKeyOfDecimal,
   base64TableKeyOfSymbol,
 } from "./const";
-
-const baseValToDecimalVal = (str: string) => {
-  let sum = 0;
-  const len = str.length;
-  const base64Num = 6;
-  for (let i = 0; i < len; i++) {
-    sum += Math.pow(2, Math.abs(i - base64Num + 1)) * Number(str[i]);
-  }
-  return sum;
-};
-
-const decimalValToBinary = (decimal: number, bits: number) => {
-  let binary = decimal?.toString(2) || "";
-  return binary.padStart(bits, "0");
-};
-
-const splitString = (str: string, length: number) => {
-  const regex = new RegExp(`.{1,${length}}`, "g");
-  return str.match(regex);
-};
+import { baseValToDecimalVal, decimalValToBinary, splitString } from "./utils";
 
 // ASCII编码 -> base64编码
 const myAtob = (str: string) => {
-  let asciiStrArr = [];
+  const asciiStrArr = [];
   for (let i = 0; i < str.length; i++) {
     asciiStrArr.push(ascii7BitKeyBySymbol[str[i]].binary);
   }
   let aasciiStr = asciiStrArr.join("");
-  if (aasciiStr.length % 6 !== 0) {
-    console.log("不足以整除6");
-    return;
+  const extraZeroNum = Math.abs((aasciiStr.length % 6) - 6);
+  if (extraZeroNum !== 0) {
+    aasciiStr = aasciiStr.padEnd(aasciiStr.length + extraZeroNum, "0");
   }
-  let index = 0;
-  let base64StrArr = [];
-  let temp = "";
-  for (let j = 0; j < aasciiStr.length; j++) {
-    temp += aasciiStr[j];
-    index++;
-    if (index > 0 && index % 6 === 0) {
-      base64StrArr.push(temp);
-      index = 0;
-      temp = "";
-    }
-  }
+
+  const base64StrArr = splitString(aasciiStr, 6);
   const decimalNum = base64StrArr?.map(baseValToDecimalVal) || [];
   const base64SymbolArr =
     decimalNum?.map((item) => base64TableKeyOfDecimal[item].symbol) || [];
@@ -65,8 +36,11 @@ const myBtoA = (str: string) => {
     base64DecimalArr?.map((decimal) => decimalValToBinary(decimal, 6)) || [];
   const base64BinaryStr = base64BinaryArr.join("");
   const bytesArr = splitString(base64BinaryStr, 8) || [];
-  return bytesArr.map((binary) => ascii7BitKeyByBinary[binary]?.symbol || '').join("");
+  const ascii = bytesArr
+    .map((binary) => ascii7BitKeyByBinary[binary]?.symbol || "")
+    .join("");
+  return ascii;
 };
 
-console.log(myAtob("followInsider__"));
-console.log(myBtoA("Zm9sbG93SW5zaWRlcl9f"));
+console.log("lcx--encode:", myAtob("lcx"));
+console.log("bGN4A--decode:", myBtoA("bGN4A"));
