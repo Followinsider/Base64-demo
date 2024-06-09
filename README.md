@@ -65,7 +65,7 @@
 
 ## 值得一看
 
-- 黄玄 base64 vlog
+- 黄玄老师 base64 vlog
   - https://www.bilibili.com/video/BV1xy4y187MF
 - base64 转换可视化
   - https://base64decode.tech/playground
