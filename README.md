@@ -60,3 +60,13 @@
       - **如果输入长度对 3 取余为 1**（即只剩下一个字节，8 位），则这个字节会被转化为 Base64 的第一个字符的前 6 位，并且用两个等号`==`作为填充。
       - **如果输入长度对 3 取余为 2**（即剩下两个字节，16 位），这两个字节会被转化为 Base64 的前两个字符的前 12 位，并且用一个等号`=`作为填充。
       - 所以你可以回到【Base64 alphabet】看到 index 为 63 下面的【Padding】
+
+
+
+## 值得一看
+
+- 黄玄 base64 vlog
+  - https://www.bilibili.com/video/BV1xy4y187MF
+- base64 转换可视化
+  - https://base64decode.tech/playground
+
